@@ -1,0 +1,7 @@
+title: "Warranty Manager"
+eyebrow: SoloHost App
+description: "Tạo app :  Warranty Manager ứng dụng quản lý bảo hành sản phẩm, lưu ngày mua, thời hạn, hóa đơn và nhắc trước khi hết hạn."
+footer_hint: Ready to run on Pi Desktop SoloHost.
+output_file: .env
+after_save: Saved. Start the app from SoloHost.
+fields: []

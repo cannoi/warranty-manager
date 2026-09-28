@@ -1,0 +1,15 @@
+{
+  "name": "warranty-manager",
+  "version": "1.0.0",
+  "description": "Warranty Manager application to track product warranties, purchase dates, and invoices",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "sqlite3": "^5.1.7",
+    "multer": "^1.4.5-lts.1"
+  }
+}

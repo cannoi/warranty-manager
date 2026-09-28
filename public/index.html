@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Warranty Manager - Quản lý bảo hành sản phẩm</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="style.css">
+<style>.paf-made-by{position:fixed;right:8px;bottom:8px;width:min(72px,12vw);max-width:12vw;height:auto;object-fit:contain;opacity:.5;background:transparent;padding:0;border:0;box-shadow:none;filter:none;pointer-events:none;z-index:30}</style></head>
+<body class="bg-light">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#"><i class="bi bi-shield-check me-2"></i>Warranty Manager</a>
+      <button class="btn btn-light text-primary fw-semibold" data-bs-toggle="modal" data-bs-target="#addModal">
+        <i class="bi bi-plus-lg me-1"></i> Thêm bảo hành
+      </button>
+    </div>
+  </nav>
+
+  <div class="container my-4">
+    <!-- Summary Cards -->
+    <div class="row g-3 mb-4">
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm bg-white border-start border-primary border-4">
+          <div class="card-body">
+            <h6 class="text-muted mb-1">Tổng sản phẩm</h6>
+            <h3 id="statTotal" class="fw-bold mb-0">0</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm bg-white border-start border-warning border-4">
+          <div class="card-body">
+            <h6 class="text-muted mb-1">Sắp hết hạn (30 ngày)</h6>
+            <h3 id="statWarning" class="fw-bold text-warning mb-0">0</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm bg-white border-start border-danger border-4">
+          <div class="card-body">
+            <h6 class="text-muted mb-1">Đã hết hạn</h6>
+            <h3 id="statExpired" class="fw-bold text-danger mb-0">0</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter & Search -->
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-8">
+            <div class="input-group">
+              <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+              <input type="text" id="searchInput" class="form-control" placeholder="Tìm kiếm theo tên sản phẩm, danh mục...">
+            </div>
+          </div>
+          <div class="col-md-4">
+            <select id="statusFilter" class="form-select">
+              <option value="all">Tất cả trạng thái</option>
+              <option value="active">Còn hạn</option>
+              <option value="warning">Sắp hết hạn (&lt; 30 ngày)</option>
+              <option value="expired">Đã hết hạn</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Warranty List Table / Cards -->
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th class="ps-3">Sản phẩm</th>
+                <th>Danh mục</th>
+                <th>Ngày mua</th>
+                <th>Hết hạn</th>
+                <th>Trạng thái</th>
+                <th>Hóa đơn</th>
+                <th class="text-end pe-3">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="warrantyTableBody">
+              <tr><td colspan="7" class="text-center py-4 text-muted">Đang tải dữ liệu...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Modal -->
+  <div class="modal fade" id="addModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form id="addForm">
+          <div class="modal-header">
+            <h5 class="modal-title fw-bold"><i class="bi bi-plus-circle me-2"></i>Thêm sản phẩm bảo hành</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Tên sản phẩm *</label>
+              <input type="text" class="form-control" name="name" required placeholder="VD: Laptop Dell XPS 15">
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Danh mục</label>
+              <input type="text" class="form-control" name="category" placeholder="VD: Điện tử, Điện gia dụng">
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">Ngày mua *</label>
+                <input type="date" class="form-control" name="purchase_date" required id="purchaseDateInput">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-semibold">Thời hạn (tháng) *</label>
+                <input type="number" class="form-control" name="warranty_months" min="1" value="12" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Ảnh hóa đơn / Phiếu bảo hành</label>
+              <input type="file" class="form-control" name="invoice_image" accept="image/*">
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Ghi chú</label>
+              <textarea class="form-control" name="notes" rows="2" placeholder="Số Serial, đại lý mua hàng..."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            <button type="submit" class="btn btn-primary" id="saveBtn">Lưu sản phẩm</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Preview Modal -->
+  <div class="modal fade" id="imageModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Ảnh hóa đơn</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+          <img id="previewImg" src="" alt="Hóa đơn" class="img-fluid rounded">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Made with badge -->
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="app.js"></script>
+<img class="paf-made-by" src="/made-by.png" alt="Made with App Builder — Pi SoloHost"></body>
+</html>
